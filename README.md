@@ -168,17 +168,16 @@ The React app will open at `http://localhost:3000`.
 The map is centered on **Surat, Gujarat, India** (lat: 21.1702, lng: 72.8311) by default.
 
 ---
-
  Screenshots
 
  Home Page
-![Home](assets/home.png)
+<img src="assets/home.png" width="800"/>
 
- Input Section
-![Input](assets/input.png)
+ Input Example
+<img src="assets/input.png" width="800"/>
 
-Prediction Result
-![Result](assets/result.png)
+ Prediction Result
+<img src="assets/result.png" width="800"/>
 
 > To add screenshots: create an `assets/` folder in the repo root and drop in your images.
 
