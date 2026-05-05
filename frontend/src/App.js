@@ -20,7 +20,7 @@ function App() {
 
   const predictTraffic = async () => {
 
-    // ✅ Validation
+    //  Validation
     if (!hour || !vehicles) {
       alert("Please fill all fields");
       return;
@@ -42,7 +42,7 @@ function App() {
     }
   };
 
-  // 🔁 Real-time update every 10 sec
+  //  Real-time update every 10 sec
   useEffect(() => {
     const interval = setInterval(() => {
       if (hour && vehicles) {
@@ -56,12 +56,12 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
 
-      {/* 🔷 Title */}
+      {/*  Title */}
       <h1 className="text-3xl font-bold mb-6 text-blue-600">
-        🚦 Traffic Prediction System
+         Traffic Prediction System
       </h1>
 
-      {/* 🗺️ Map */}
+      {/*  Map */}
       <div className="w-full max-w-3xl bg-white p-4 rounded-2xl shadow-lg">
         <LoadScript googleMapsApiKey="AIzaSyCvhzk0_maSlUVI2kPY8zuQgXX01Hm-EG8">
           <GoogleMap
@@ -74,7 +74,7 @@ function App() {
         </LoadScript>
       </div>
 
-      {/* 📥 Input Card */}
+      {/*  Input Card */}
       <div className="mt-6 bg-white p-6 rounded-2xl shadow-lg w-full max-w-md space-y-4">
         
         <h2 className="text-xl font-semibold text-gray-700">
@@ -103,7 +103,7 @@ function App() {
         </button>
       </div>
 
-      {/* 🎯 Result Card */}
+      {/*  Result Card */}
       {result && (
         <div className="mt-6 bg-white p-4 rounded-xl shadow-md text-center">
           <h2
@@ -115,14 +115,14 @@ function App() {
                 : "text-green-500"
             }`}
           >
-            🚦 Traffic Level: {result}
+             Traffic Level: {result}
           </h2>
         </div>
       )}
 
-      {/* 🔻 Footer */}
+      {/*  Footer */}
       <footer className="mt-10 text-gray-500 text-sm">
-        Built with ❤️ using ML + React + Google Maps
+        Built with  using ML + React + Google Maps
       </footer>
 
     </div>
