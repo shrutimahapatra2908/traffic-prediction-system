@@ -4,18 +4,18 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import joblib
 
-# 📂 Load dataset
+#  Load dataset
 df = pd.read_csv("traffic.csv")
 
-# 🕒 Convert datetime to features
+#  Convert datetime to features
 df["date_time"] = pd.to_datetime(df["date_time"])
 df["hour"] = df["date_time"].dt.hour
 df["day"] = df["date_time"].dt.dayofweek
 
-# 🌦️ Convert weather to numeric
+#  Convert weather to numeric
 df["weather_main"] = df["weather_main"].astype("category").cat.codes
 
-# 🚦 Create traffic labels
+#  Create traffic labels
 def classify_traffic(volume):
     if volume < 1000:
         return 0   # Low
@@ -26,26 +26,26 @@ def classify_traffic(volume):
 
 df["traffic"] = df["traffic_volume"].apply(classify_traffic)
 
-# 🎯 Features & Target
+#  Features & Target
 X = df[["hour", "day", "weather_main"]]
 y = df["traffic"]
 
-# 🔀 Train-test split
+#  Train-test split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# 🌲 Train model
+#  Train model
 model = RandomForestClassifier()
 model.fit(X_train, y_train)
 
-# 📊 Evaluate model
+#  Evaluate model
 preds = model.predict(X_test)
 acc = accuracy_score(y_test, preds)
 
 print("Accuracy:", acc)
 
-# 💾 Save BOTH model + accuracy
+#  Save BOTH model + accuracy
 joblib.dump({
     "model": model,
     "accuracy": acc
@@ -53,7 +53,7 @@ joblib.dump({
 
 print(" Model + accuracy saved successfully!")
 
-# 🔍 Verify saved file (important)
+#  Verify saved file (important)
 data = joblib.load("traffic_model.pkl")
 print("Saved file type:", type(data))
 
