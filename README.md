@@ -1,46 +1,62 @@
  Real-Time Traffic Prediction System
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![Flask](https://img.shields.io/badge/Backend-Flask-black)
+![ML](https://img.shields.io/badge/ML-RandomForest-green)
+![Status](https://img.shields.io/badge/Status-Active-success)
+A full-stack **Machine Learning + Web Application** that predicts traffic congestion levels in real time using a **Random Forest model trained on real-world data**, with live weather integration, interactive maps, and dynamic visualisation.
 
-![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white)
-![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react&logoColor=black)
-![Flask](https://img.shields.io/badge/Flask-Backend-green?logo=flask&logoColor=white)
-![ML](https://img.shields.io/badge/ML-RandomForest-orange?logo=scikit-learn&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-A production-style full-stack application that predicts traffic congestion using Machine Learning and visualizes results through an interactive map-based interface.
+
+ **Model Accuracy: ~90%** (Random Forest · Metro Interstate Traffic Volume dataset)
 
 ---
 
+ Why This Project
+
+Traffic congestion prediction is a core problem in smart city planning. This project demonstrates how machine learning can be combined with real-time contextual data — weather conditions and time of day — to build an intelligent traffic monitoring system that updates automatically and explains its predictions transparently.
+
+---
 
  Overview
 
-This project combines **Machine Learning + Web Development + Map Visualization** to simulate a real-world traffic prediction system.
-
-Users can:
-- Enter traffic conditions (hour of day & vehicle count)
-- View predicted congestion levels — **Low / Medium / High**
-- Visualize the monitored location on an interactive Google Map
-- Get automatic re-predictions every 10 seconds (real-time simulation)
+This project simulates a real-world traffic intelligence system for **Surat, Gujarat**. Users enter the hour and vehicle count; the app automatically fetches live weather, runs a prediction, and visualises results — refreshing every 10 seconds automatically.
 
 ---
 
  Key Features
 
--  Traffic congestion prediction using a **Random Forest Classifier**
--  Auto-refresh predictions every **10 seconds**
--  **Google Maps** integration with a live marker
--  Clean, responsive UI built with **Tailwind CSS**
--  **REST API** powered by Flask
--  Color-coded results — 🟢 Low · 🟡 Medium · 🔴 High
+- Predicts traffic congestion: **Low / Medium / High**
+- Random Forest model trained on the [Metro Interstate Traffic Volume dataset](https://archive.ics.uci.edu/ml/datasets/Metro+Interstate+Traffic+Volume)
+- Auto-fetches live weather from OpenWeather API (Surat, Gujarat)
+- Bar chart showing prediction history trend (Chart.js)
+- Interactive Google Maps embed centred on Surat (`21.1702°N, 72.8311°E`)
+- Auto-refreshes predictions every **10 seconds** when inputs are filled
+- Displays live **model accuracy** with every prediction
+- In-session prediction history table
+- Responsive UI with Tailwind CSS
 
 ---
 
- Tech Stack
+ Machine Learning Details
 
-| Layer | Technologies |
-|-------|-------------|
-| **Frontend** | React (latest), Tailwind CSS 3, Axios, @react-google-maps/api |
-| **Backend** | Flask (Python), Flask-CORS, Joblib |
-| **ML Model** | Scikit-learn (RandomForestClassifier), Pandas, NumPy |
+| Detail | Value |
+|---|---|
+| Algorithm | Random Forest Classifier (scikit-learn) |
+| Dataset | Metro Interstate Traffic Volume (2012–2018) |
+| Training split | 80 / 20 |
+| Features | Hour of day, day of week, weather condition (encoded) |
+| Target | Low (< 1 000 vehicles/hr) · Medium (1 000 – 2 999) · High (≥ 3 000) |
+| Saved artefact | `traffic_model.pkl` — stores both model + accuracy score |
+
+Weather is encoded identically in training and inference:
+
+| Weather string | Code |
+|---|---|
+| Clear | 0 |
+| Clouds | 1 |
+| Rain / Drizzle | 2 |
+| Snow | 3 |
+| Fog / Mist | 4 |
 
 ---
 
@@ -50,169 +66,154 @@ Users can:
 traffic-prediction-system/
 │
 ├── backend/
-│   ├── app.py                  # Flask REST API (/predict endpoint)
-│   └── test.py                 # Backend unit tests
+│   ├── app.py             # Flask REST API (/predict endpoint)
+│   └── test.py            # API smoke tests
 │
 ├── frontend/
-│   ├── public/
-│   │   └── index.html
 │   ├── src/
-│   │   ├── App.js              # Main React component
-│   │   ├── App.css
-│   │   └── index.js
-│   ├── package.json
+│   │   ├── App.js         # Main React UI (maps, chart, history)
+│   │   └── App.css        # Custom styles
 │   ├── tailwind.config.js
-│   └── postcss.config.js
+│   └── package.json
 │
 ├── ml-model/
-│   ├── train_model.py          # Model training script
-│   └── traffic_model.pkl       # Pre-trained Random Forest model
+│   ├── train_model.py     # Training script — outputs traffic_model.pkl
+│   ├── traffic.csv        # Metro Interstate Traffic Volume dataset
+│   └── traffic_model.pkl  # Serialised model + accuracy (generated)
 │
-├── README.md
-└── .gitignore
+├── assets/                # Screenshots
+└── README.md
 ```
 
 ---
- Prerequisites
 
-- Python 3.8+
-- Node.js 16+ and npm
-- A [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
+ Screenshots
+
+| Home & Map | Input Form | Result |
+|---|---|---|
+| ![Home](assets/home.png) | ![Input](assets/input.png) | ![Result](assets/result1.png) | ![Result](assets/result2.png)
 
 ---
 
- 1. Clone the Repository
+ Getting Started
+
+Prerequisites
+
+- Python 3.8+
+- Node.js 16+
+- npm
+
+---
+
+ 1 — Clone the repo
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/traffic-prediction-system.git
 cd traffic-prediction-system
 ```
 
----
-
- 2. Train the Model (Optional)
-
-A pre-trained `traffic_model.pkl` is already included. To retrain:
+ 2 — Train the model
 
 ```bash
 cd ml-model
 pip install scikit-learn pandas joblib
 python train_model.py
-# Output: "Model trained and saved!"
+# → Saves traffic_model.pkl with model + accuracy
 ```
 
-> Copy the new `traffic_model.pkl` to the `ml-model/` folder if you retrain.
-
----
-
-3. Run the Backend
+ 3 — Run the backend
 
 ```bash
 cd backend
-pip install flask flask-cors joblib scikit-learn
+pip install flask flask-cors joblib scikit-learn pandas numpy
 python app.py
+# → Starts on http://127.0.0.1:5000
 ```
 
-The Flask server will start at `http://127.0.0.1:5000`.
-
-**API Endpoint:**
-```
-POST /predict
-Content-Type: application/json
-
-{ "hour": 9, "vehicle_count": 80 }
-→ { "traffic": "High" }
-```
-
----
-
- 4. Run the Frontend
+ 4 — Run the frontend
 
 ```bash
 cd frontend
 npm install
 npm start
+# → Opens http://localhost:3000
 ```
 
-The React app will open at `http://localhost:3000`.
+---
 
-> **Note:** Add your Google Maps API key in `src/App.js` at the `googleMapsApiKey` prop in `<LoadScript>`.
-> ⚠️ Never expose your API key publicly. Use a `.env` file:
-> ```
-> REACT_APP_GOOGLE_MAPS_KEY=your_key_here
-> ```
-> Then reference it as `process.env.REACT_APP_GOOGLE_MAPS_KEY` in `App.js`.
+ API Reference
+
+ `POST /predict`
+
+**Request body:**
+
+```json
+{
+  "hour": 9,
+  "vehicle_count": 80,
+  "weather": "Rain",
+  "day": 2
+}
+```
+
+> `vehicle_count` is currently collected for future model enhancements and feature expansion. The model uses `hour`, `day`, and `weather` as its active features.
+
+**Response:**
+
+```json
+{
+  "traffic": "High",
+  "accuracy": 0.87
+}
+```
+
+**Error response (5xx):**
+
+```json
+{ "error": "<exception message>" }
+```
 
 ---
 
  Example Predictions
 
-| Hour | Vehicle Count | Predicted Level |
-|------|---------------|-----------------|
-| 8    | 50            | Medium          |
-| 9    | 80            | High            |
-| 14   | 30            | Low             |
-| 17   | 100           | High            |
-| 23   | 10            | Low             |
+| Hour | Weather | Predicted Level |
+|------|---------|-----------------|
+| 9    | Rain    | High            |
+| 14   | Clear   | Low             |
+| 18   | Clouds  | High            |
 
 ---
 
- How the ML Model Works
+ Tech Stack
 
-1. **Input features:** `hour` (0–23) and `vehicle_count`
-2. **Algorithm:** `RandomForestClassifier` from scikit-learn
-3. **Labels:** `Low (0)`, `Medium (1)`, `High (2)`
-4. **Training data:** Located in `train_model.py` — can be replaced with a real dataset
-5. **Serialization:** Model saved as `traffic_model.pkl` using `joblib`
-
-The map is centered on **Surat, Gujarat, India** (lat: 21.1702, lng: 72.8311) by default.
-
----
- Screenshots
-
- Home Page
-<img src="assets/home.png" width="800"/>
-
- Input Example
-<img src="assets/input.png" width="800"/>
-
- Prediction Result
-<img src="assets/result.png" width="800"/>
-
-> To add screenshots: create an `assets/` folder in the repo root and drop in your images.
+| Layer | Technology |
+|---|---|
+| Frontend | React 19, Tailwind CSS, Axios, Chart.js, `@react-google-maps/api` |
+| Backend | Python, Flask, Flask-CORS |
+| ML | scikit-learn, pandas, NumPy, joblib |
+| External APIs | OpenWeather API, Google Maps JavaScript API |
 
 ---
 
- Future Improvements
+ Key Learnings
 
-- [ ] Route-based traffic prediction (origin → destination)
-- [ ] Weather data integration for richer predictions
-- [ ] Live traffic API (e.g., Google Maps Traffic Layer, TomTom)
-- [ ] Historical trend charts
-- [ ] Mobile app version (React Native)
-- [ ] Docker containerization for easier deployment
+- Built an end-to-end ML pipeline: data cleaning → feature engineering → training → serialisation → REST API deployment
+- Integrated a trained scikit-learn model with a Flask backend and consumed it from a React frontend
+- Applied real-world feature engineering (datetime → hour + day-of-week, categorical weather encoding)
+- Implemented real-time UI updates with auto-refresh and live Chart.js visualisation
+- Worked with a production-scale dataset (48 000+ hourly records, 2012–2018)
 
 ---
 
- Requirements
+ Roadmap
 
-**Backend (`pip install`):**
-```
-flask
-flask-cors
-joblib
-scikit-learn
-pandas
-numpy
-```
-
-**Frontend (`npm install`):**
-```
-react (latest)
-axios
-@react-google-maps/api
-tailwindcss
-```
+- [ ] Add vehicle count as an active model feature
+- [ ] Route-based predictions
+- [ ] Real-time traffic data integration
+- [ ] Advanced analytics dashboard
+- [ ] Mobile-responsive PWA
+- [ ] Cloud deployment (Render / Railway + Vercel)
 
 ---
 
@@ -220,8 +221,4 @@ tailwindcss
 
 **Shruti Mahapatra**
 
----
-
- License
-
-This project is open-source and available under the [MIT License](LICENSE).
+If you found this project helpful, consider giving it a star on GitHub!
