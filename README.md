@@ -1,4 +1,4 @@
- Real-Time Traffic Prediction System
+ # Real-Time Traffic Prediction System
 ![React](https://img.shields.io/badge/Frontend-React-blue)
 ![Flask](https://img.shields.io/badge/Backend-Flask-black)
 ![ML](https://img.shields.io/badge/ML-RandomForest-green)
@@ -89,7 +89,7 @@ traffic-prediction-system/
 
  Screenshots
 
-| Home & Map | Input Form | Result |
+| Home & Map | Input Form | Result1 | Result2 |
 |---|---|---|
 | ![Home](assets/home.png) | ![Input](assets/input.png) | ![Result](assets/result1.png) | ![Result](assets/result2.png)
 
@@ -220,5 +220,3 @@ npm start
  Author
 
 **Shruti Mahapatra**
-
-If you found this project helpful, consider giving it a star on GitHub!
