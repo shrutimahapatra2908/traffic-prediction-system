@@ -1,28 +1,102 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 import joblib
 
-# Sample dataset (you can replace with real dataset)
-data = {
-    'hour': [8, 9, 10, 17, 18, 19],
-    'vehicle_count': [50, 80, 40, 100, 120, 90],
-    'traffic': ['Medium', 'High', 'Low', 'High', 'High', 'Medium']
-}
+# 📂 Load dataset
+df = pd.read_csv("traffic.csv")
 
-df = pd.DataFrame(data)
+# 🕒 Convert datetime to features
+df["date_time"] = pd.to_datetime(df["date_time"])
+df["hour"] = df["date_time"].dt.hour
+df["day"] = df["date_time"].dt.dayofweek
 
-# Convert labels to numbers
-df['traffic'] = df['traffic'].map({'Low': 0, 'Medium': 1, 'High': 2})
+# 🌦️ Convert weather to numeric
+df["weather_main"] = df["weather_main"].astype("category").cat.codes
 
-X = df[['hour', 'vehicle_count']]
-y = df['traffic']
+# 🚦 Create traffic labels
+def classify_traffic(volume):
+    if volume < 1000:
+        return 0   # Low
+    elif volume < 3000:
+        return 1   # Medium
+    else:
+        return 2   # High
 
-# Train model
+df["traffic"] = df["traffic_volume"].apply(classify_traffic)
+
+# 🎯 Features & Target
+X = df[["hour", "day", "weather_main"]]
+y = df["traffic"]
+
+# 🔀 Train-test split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# 🌲 Train model
 model = RandomForestClassifier()
-model.fit(X, y)
+model.fit(X_train, y_train)
 
-# Save model
-joblib.dump(model, 'traffic_model.pkl')
+# 📊 Evaluate model
+preds = model.predict(X_test)
+acc = accuracy_score(y_test, preds)
 
-print("Model trained and saved!")
+print("Accuracy:", acc)
+
+# 💾 Save BOTH model + accuracy
+joblib.dump({
+    "model": model,
+    "accuracy": acc
+}, "traffic_model.pkl")
+
+print(" Model + accuracy saved successfully!")
+
+# 🔍 Verify saved file (important)
+data = joblib.load("traffic_model.pkl")
+print("Saved file type:", type(data))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
